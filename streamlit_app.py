@@ -48,4 +48,4 @@ else:
         with st.chat_message("assistant"):
             st.markdown(reply)
 
-        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.messages.append({"role": "assistant", "content": reply})
