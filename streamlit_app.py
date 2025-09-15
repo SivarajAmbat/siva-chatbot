@@ -1,5 +1,6 @@
 import streamlit as st
-import google.generativeai as genai
+from google import genai
+
 
 # Show title and description.
 st.title("💬 Chatbot")
@@ -14,7 +15,7 @@ if not gemini_api_key:
     st.info("Please add your Gemini API key to continue.", icon="🗝️")
 else:
     # Configure Gemini
-    genai.configure(api_key=gemini_api_key)
+    client = genai.Client(api_key=gemini_api_key)
 
     # Create a session state variable to store the chat messages. This ensures that the
     # messages persist across reruns.
@@ -36,9 +37,9 @@ else:
             st.markdown(prompt)
 
         # Generate response using Gemini
-        model = genai.GenerativeModel("gemini-2.5-flash-nano")
-        response = model.generate_content(
-            [m["content"] for m in st.session_state.messages]
+        response = client.models.generate_content(
+            model = "gemini-2.5-flash",
+            contents = [m["content"] for m in st.session_state.messages]
         )
 
         reply = response.text if response and response.text else "⚠️ No response from Gemini."
